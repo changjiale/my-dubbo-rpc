@@ -26,11 +26,11 @@ public class  ServiceRegisterCenterImpl implements ServiceRegisterCenter {
 
     private CuratorFramework curatorFramework;
 
-    {
+    public ServiceRegisterCenterImpl() {
         curatorFramework = CuratorFrameworkFactory.builder()
-            .connectString(ZkConfig.addr).sessionTimeoutMs(4000)
-            .retryPolicy(new ExponentialBackoffRetry(1000, 10))
-            .build();
+                .connectString(ZkConfig.addr).sessionTimeoutMs(4000)
+                .retryPolicy(new ExponentialBackoffRetry(1000, 10))
+                .build();
         curatorFramework.start();
     }
 
@@ -57,7 +57,7 @@ public class  ServiceRegisterCenterImpl implements ServiceRegisterCenter {
     public String discover(String serverName) {
         String path = ZkConfig.ZK_REGISTER_PATH.concat("/").concat(serverName);
         try {
-            List<String> repos = curatorFramework.getChildren().forPath(path);
+            repos = curatorFramework.getChildren().forPath(path);
         }catch (Exception e) {
             e.printStackTrace();
         }

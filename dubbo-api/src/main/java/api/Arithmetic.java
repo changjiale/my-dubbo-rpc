@@ -5,7 +5,7 @@ package api;
  * @create: 2019/11/25 21:30
  * @description:
  */
-public interface Api {
+public interface Arithmetic {
 
-    void sum(Integer a, Integer b);
+    String sum(Integer a, Integer b);
 }

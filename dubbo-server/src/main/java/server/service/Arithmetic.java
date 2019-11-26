@@ -1,6 +1,5 @@
 package server.service;
 
-import api.Api;
 import common.annotation.RpcAnnotation;
 
 /**
@@ -8,10 +7,11 @@ import common.annotation.RpcAnnotation;
  * @create: 2019/11/25 17:58
  * @description:
  */
-@RpcAnnotation(Api.class)
+@RpcAnnotation(api.Arithmetic.class)
 public class Arithmetic {
 
-    public void sum(Integer a, Integer b) {
+    public String sum(Integer a, Integer b) {
         System.out.println("sum:" + (a+b));
+        return "rpc return sum:" + (a+b);
     }
 }

@@ -1,8 +1,7 @@
 package sum;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import outerApi.Arithmetic;
+import outerApi.Api;
 
 /**
  * @author: changjiale
@@ -14,7 +13,7 @@ public class Add {
 
     @Test
     public void test(){
-        Arithmetic arithmetic = new Arithmetic();
-        arithmetic.sum(1, 2);
+        Api api = new Api();
+        api.sum(1, 2);
     }
 }

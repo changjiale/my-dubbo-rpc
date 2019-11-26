@@ -21,10 +21,10 @@ import java.lang.reflect.Proxy;
  * @description:
  */
 public class RpcClientProxy {
-    private ServiceRegisterCenter registerCenter;
+    private ServiceRegisterCenter serviceDiscover;
 
-    public RpcClientProxy(ServiceRegisterCenter registerCenter) {
-        this.registerCenter = registerCenter;
+    public RpcClientProxy(ServiceRegisterCenter serviceDiscover) {
+        this.serviceDiscover = serviceDiscover;
     }
 
     public <T> T create(final Class<T> interfaceClass) {
@@ -41,7 +41,7 @@ public class RpcClientProxy {
                         //服务发现，zk进行通讯
                         String serviceName = interfaceClass.getName();
                         //获取服务实现url地址
-                        String serviceAddress = registerCenter.discover(serviceName);
+                        String serviceAddress = serviceDiscover.discover(serviceName);
                         //解析ip和port
                         System.out.println("服务端实现地址：" + serviceAddress);
                         String[] arrs = serviceAddress.split(":");
