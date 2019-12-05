@@ -18,7 +18,7 @@ public class Application {
         SpringApplication.run(Application.class);
         Arithmetic arithmetic = new Arithmetic();
         ServiceRegisterCenter serviceRegisterCenter = new ServiceRegisterCenterImpl();
-        RpcServerProxy rpcServerProxy = new RpcServerProxy(serviceRegisterCenter, "127.0.0.1:8080");
+        RpcServerProxy rpcServerProxy = new RpcServerProxy(serviceRegisterCenter, "127.0.0.1:8088");
         rpcServerProxy.bind(arithmetic);
         rpcServerProxy.publisher();
     }
