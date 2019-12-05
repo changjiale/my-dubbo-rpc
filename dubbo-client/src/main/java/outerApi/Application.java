@@ -1,8 +1,5 @@
 package outerApi;
 
-import common.proxy.client.RpcClientProxy;
-import common.registry.ServiceRegisterCenter;
-import common.registry.impl.ServiceRegisterCenterImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

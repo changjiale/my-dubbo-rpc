@@ -1,11 +1,13 @@
 package server;
 
-import common.proxy.server.RpcServerProxy;
-import common.registry.ServiceRegisterCenter;
-import common.registry.impl.ServiceRegisterCenterImpl;
+import common.URL;
+import common.protocol.http.HttpServer;
+import common.registry.LocalRegister;
+import common.registry.RemoteMapRegister;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import server.service.Arithmetic;
+import sun.jvm.hotspot.HelloWorld;
 
 /**
  * @author: changjiale
@@ -15,11 +17,15 @@ import server.service.Arithmetic;
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
+
         SpringApplication.run(Application.class);
-        Arithmetic arithmetic = new Arithmetic();
-        ServiceRegisterCenter serviceRegisterCenter = new ServiceRegisterCenterImpl();
-        RpcServerProxy rpcServerProxy = new RpcServerProxy(serviceRegisterCenter, "127.0.0.1:8080");
-        rpcServerProxy.bind(arithmetic);
-        rpcServerProxy.publisher();
+        LocalRegister.regist(Arithmetic.class.getName(), Arithmetic.class);
+
+
+        URL url = new URL("localhost", 8087);
+        RemoteMapRegister.register(Arithmetic.class.getName(), url);
+
+        HttpServer httpServer = new HttpServer();
+        httpServer.start("localhost", 8087);
     }
 }
