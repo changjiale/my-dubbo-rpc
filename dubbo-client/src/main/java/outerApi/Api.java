@@ -1,6 +1,7 @@
 package outerApi;
 
 import api.Arithmetic;
+import common.ProxyFactory;
 import common.protocol.http.HttpClient;
 import common.request.RpcRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +23,11 @@ public class Api {
     }
 
     public static void main(String[] args) {
-        HttpClient httpClient = new HttpClient();
-        RpcRequest rpcRequest = new RpcRequest(Arithmetic.class.getName(), "sum", new Class[]{Integer.class, Integer.class}, new Object[]{1, 2});
-        String result = httpClient.send("localhost", 8087, rpcRequest);
-        System.out.println(result);
+//        HttpClient httpClient = new HttpClient();
+//        RpcRequest rpcRequest = new RpcRequest(Arithmetic.class.getName(), "sum", new Class[]{Integer.class, Integer.class}, new Object[]{1, 2});
+//        String result = httpClient.send("localhost", 8087, rpcRequest);
+        Arithmetic proxy = ProxyFactory.getProxy(Arithmetic.class);
+        System.out.println(proxy.sum(1, 11));
     }
 
 }

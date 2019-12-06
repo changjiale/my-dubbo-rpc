@@ -1,5 +1,6 @@
 package common;
 
+import common.protocol.dubbo.NettyClient;
 import common.protocol.http.HttpClient;
 import common.registry.RemoteMapRegister;
 import common.request.RpcRequest;
@@ -19,7 +20,7 @@ public class ProxyFactory {
         return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[]{interfaceClass}, new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                HttpClient httpClient = new HttpClient();
+                NettyClient httpClient = new NettyClient();
                 RpcRequest rpcRequest = new RpcRequest(interfaceClass.getName(), method.getName(),method.getParameterTypes(), args);
                 URL url = RemoteMapRegister.random(interfaceClass.getName());
                 String result = httpClient.send(url.getHostname(), url.getPort(), rpcRequest);

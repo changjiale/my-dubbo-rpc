@@ -1,6 +1,7 @@
 package server;
 
 import common.URL;
+import common.protocol.dubbo.NettyServer;
 import common.protocol.http.HttpServer;
 import common.registry.LocalRegister;
 import common.registry.RemoteMapRegister;
@@ -18,14 +19,14 @@ import sun.jvm.hotspot.HelloWorld;
 public class Application {
     public static void main(String[] args) {
 
-        SpringApplication.run(Application.class);
-        LocalRegister.regist(Arithmetic.class.getName(), Arithmetic.class);
+        //SpringApplication.run(Application.class);
+        LocalRegister.regist(api.Arithmetic.class.getName(), Arithmetic.class);
 
 
-        URL url = new URL("localhost", 8087);
-        RemoteMapRegister.register(Arithmetic.class.getName(), url);
+        URL url = new URL("127.0.0.1", 8087);
+        RemoteMapRegister.register(api.Arithmetic.class.getName(), url);
 
-        HttpServer httpServer = new HttpServer();
-        httpServer.start("localhost", 8087);
+        NettyServer httpServer = new NettyServer();
+        httpServer.start("127.0.0.1", 8087);
     }
 }
