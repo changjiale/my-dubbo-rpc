@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.omg.CORBA.PUBLIC_MEMBER;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 
 /**
@@ -15,17 +16,18 @@ import java.lang.reflect.Method;
  */
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        RpcRequest rpcRequest = (RpcRequest)msg;
-        Class implClass = LocalRegister.get(rpcRequest.getClassName());
-        Method method = implClass.getMethod(rpcRequest.getMethodName(), rpcRequest.getTypes());
-        String invoke = (String) method.invoke(implClass, rpcRequest.getParams());
-        System.out.println("Netty===============" + invoke);
-        ctx.writeAndFlush("Netty: " + invoke);
+    public void channelActive(ChannelHandlerContext ctx) throws UnsupportedEncodingException {
+        System.out.println("channelActive:" + ctx.channel().remoteAddress());
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        super.exceptionCaught(ctx, cause);
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        RpcRequest rpcRequest = (RpcRequest)msg;
+        Class implClass= LocalRegister.get(rpcRequest.getClassName());
+        Method method = implClass.getMethod(rpcRequest.getMethodName(), rpcRequest.getTypes());
+        String result = (String) method.invoke(implClass.newInstance(), rpcRequest.getParams());
+        System.out.println("Netty===============" + result);
+        ctx.writeAndFlush(result);
     }
+
 }

@@ -23,7 +23,7 @@ public class ProxyFactory {
                 NettyClient httpClient = new NettyClient();
                 RpcRequest rpcRequest = new RpcRequest(interfaceClass.getName(), method.getName(),method.getParameterTypes(), args);
                 URL url = RemoteMapRegister.random(interfaceClass.getName());
-                String result = httpClient.send(url.getHostname(), url.getPort(), rpcRequest);
+                Object result = httpClient.send(url.getHostname(), url.getPort(), rpcRequest);
 
                 return result;
             }

@@ -12,26 +12,19 @@ import java.util.concurrent.Callable;
  * @create: 2019/12/06 14:42
  * @description:
  */
-public class NettyClientHandler extends ChannelInboundHandlerAdapter implements Callable {
+public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
-    private RpcRequest rpcRequest;
-    private Future future;
+    private Object response;
 
-    public RpcRequest getInvocation() {
-        return rpcRequest;
-    }
-
-    public void setRpcRequest(RpcRequest rpcRequest) {
-        this.rpcRequest = rpcRequest;
+    public Object getResponse() {
+        return response;
     }
 
     @Override
-    public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
-        future = ctx.writeAndFlush(rpcRequest);
-    }
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        //ctx 向服务端写数据   msg接收服务端消息
 
-    @Override
-    public Object call() throws Exception {
-        return future;
+        //将服务端返回的内容返回
+        response = msg;
     }
 }
