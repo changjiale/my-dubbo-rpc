@@ -28,6 +28,8 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         String result = (String) method.invoke(implClass.newInstance(), rpcRequest.getParams());
         System.out.println("Netty===============" + result);
         ctx.writeAndFlush(result);
+        ctx.flush();
+        ctx.close();
     }
 
 }
