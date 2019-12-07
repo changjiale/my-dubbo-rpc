@@ -1,6 +1,7 @@
 package common.registry;
 
 import com.alibaba.fastjson.JSONArray;
+import common.LoadBalanceFactory;
 import common.URL;
 import common.loadbalance.LoadBalance;
 import common.loadbalance.impl.RandomLoadBalance;
@@ -69,8 +70,7 @@ public class ServiceRegisterCenter {
             e.printStackTrace();
         }
         registerWatch(path);
-        LoadBalance loadBalance = new RandomLoadBalance();
-        return loadBalance.select(repos);
+        return LoadBalanceFactory.getLoadBalance().select(serverName, repos);
 
     }
 

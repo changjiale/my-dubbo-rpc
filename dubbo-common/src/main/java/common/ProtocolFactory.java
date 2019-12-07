@@ -1,5 +1,6 @@
 package common;
 
+import common.loadbalance.LoadBalance;
 import common.protocol.DubboProtocol;
 import common.protocol.HttpProtocol;
 
@@ -17,7 +18,6 @@ public class ProtocolFactory {
         ServiceLoader<Protocol> serviceLoader = ServiceLoader.load(Protocol.class);
         Iterator<Protocol> iterator = serviceLoader.iterator();
         return iterator.next();
-
 
         //工厂模式
 //        String name = System.getProperty("protocolName");
