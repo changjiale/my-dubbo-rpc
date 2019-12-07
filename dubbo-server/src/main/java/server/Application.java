@@ -1,6 +1,10 @@
 package server;
 
+import common.Protocol;
+import common.ProtocolFactory;
 import common.URL;
+import common.protocol.DubboProtocol;
+import common.protocol.HttpProtocol;
 import common.protocol.dubbo.NettyServer;
 import common.protocol.http.HttpServer;
 import common.registry.LocalRegister;
@@ -26,7 +30,7 @@ public class Application {
         URL url = new URL("127.0.0.1", 8087);
         RemoteMapRegister.register(api.Arithmetic.class.getName(), url);
 
-        NettyServer httpServer = new NettyServer();
-        httpServer.start("127.0.0.1", 8087);
+        Protocol protocol = ProtocolFactory.getProtocol();
+        protocol.start(url);
     }
 }

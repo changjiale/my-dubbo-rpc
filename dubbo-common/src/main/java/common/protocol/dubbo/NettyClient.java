@@ -20,7 +20,7 @@ import java.util.concurrent.*;
 public class NettyClient {
     private static NettyClientHandler client;
 
-    public Object send(String hostname, Integer port, RpcRequest rpcRequest) {
+    public String send(String hostname, Integer port, RpcRequest rpcRequest) {
         client = new NettyClientHandler();
 
         NioEventLoopGroup group = new NioEventLoopGroup();
@@ -47,6 +47,6 @@ public class NettyClient {
         finally {
             group.shutdownGracefully();
         }
-        return client.getResponse();
+        return (String) client.getResponse();
     }
 }
