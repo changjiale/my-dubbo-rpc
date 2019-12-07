@@ -20,7 +20,8 @@ import java.util.concurrent.*;
 public class NettyClient {
     private static NettyClientHandler client;
 
-    public String send(String hostname, Integer port, RpcRequest rpcRequest) {
+
+    public Object send(String hostname, Integer port, RpcRequest rpcRequest) {
         client = new NettyClientHandler();
 
         NioEventLoopGroup group = new NioEventLoopGroup();
@@ -37,16 +38,21 @@ public class NettyClient {
                     }
                 });
         try {
+            //connect是异步的，但调用其future的sync则是同步等待连接成功
             ChannelFuture future = b.connect(hostname, port).sync();
-            //将封装好的对象写入
-            future.channel().writeAndFlush(rpcRequest);
+            System.out.println("链接成功!" + "host:" + hostname + " port:" + port);
+            //同步等待调用信息发送成功
+            future.channel().writeAndFlush(rpcRequest).sync();
+            //同步等待NettyClientHandler的channelRead0被触发后（意味着收到了调用结果）关闭连接
             future.channel().closeFuture().sync();
+            return client.getResponse();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         finally {
             group.shutdownGracefully();
         }
-        return (String) client.getResponse();
+        return "";
     }
 }

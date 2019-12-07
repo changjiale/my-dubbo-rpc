@@ -11,5 +11,5 @@ public interface Protocol {
 
     void start(URL url);
 
-    String send(URL url, RpcRequest rpcRequest);
+    Object send(URL url, RpcRequest rpcRequest);
 }

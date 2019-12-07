@@ -11,6 +11,10 @@ import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.SocketHandler;
 
 /**
@@ -27,9 +31,9 @@ public class NettyServer {
         //启动netty
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class);
-        bootstrap.childHandler(new ChannelInitializer<Channel>() {
+        bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
-            protected void initChannel(Channel channel) throws Exception {
+            protected void initChannel(SocketChannel channel) throws Exception {
                 ChannelPipeline channelPipeline = channel.pipeline();
                 channelPipeline.addLast(new ObjectDecoder(1024 * 1024, ClassResolvers.weakCachingResolver(
                         this.getClass().getClassLoader())));
@@ -47,8 +51,10 @@ public class NettyServer {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        finally {
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
+        }
 
-//        bossGroup.shutdownGracefully();
-//        workerGroup.shutdownGracefully();
     }
 }

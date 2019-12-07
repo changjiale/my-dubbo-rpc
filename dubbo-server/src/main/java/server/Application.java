@@ -9,6 +9,7 @@ import common.protocol.dubbo.NettyServer;
 import common.protocol.http.HttpServer;
 import common.registry.LocalRegister;
 import common.registry.RemoteMapRegister;
+import common.registry.ServiceRegisterCenter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import server.service.Arithmetic;
@@ -28,7 +29,7 @@ public class Application {
 
 
         URL url = new URL("127.0.0.1", 8087);
-        RemoteMapRegister.register(api.Arithmetic.class.getName(), url);
+        ServiceRegisterCenter.getInstance().register(api.Arithmetic.class.getName(), url);
 
         Protocol protocol = ProtocolFactory.getProtocol();
         protocol.start(url);
